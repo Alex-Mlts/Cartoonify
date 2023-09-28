@@ -1,72 +1,69 @@
 # Cartoonify
 
-# Importing libraries
-
-import sys
-import os
-import cv2
-import easygui
 import numpy as np
-import matplotlib.pyplot as plt
-import imageio
+import cv2 as cv
+from matplotlib import pyplot as plt
 
-# Reading an image
+def read_file(filename):
+    img = cv.imread(filename)
+    img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+    #plt.imshow(img)
+    #plt.title("Chosen image / BGR to RGB")
+    #plt.show()
+    return img
 
-ImagePath=easygui.fileopenbox()
-img=cv2.imread(ImagePath)
-if img is None:
-    print("ERROR: Can't find any image. Choose appropriate file path.")
-    sys.exit()
+filename = "cat.jpg" # !Here add the name / path of the image you want to edit!
+img = read_file(filename)
 
-# Converting image in RGB format
+original = np.copy(img)
 
-img=cv2.cvtColor(img,,cv2.COLOR_BGR2RGB)
+b_filter = cv.bilateralFilter(img, d = 3, sigmaColor = 200, sigmaSpace = 200)
 
-# Converting image from RGB to grayscale
+#plt.imshow(b_filter)
+#plt.title("Blurred image")
+#plt.show()
 
-img_grey=cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
+def edge_mask(img, line_thickness, blur_value):
+    gray = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
+    gblur = cv.medianBlur(gray, blur_value)
 
+    edges = cv.adaptiveThreshold(gblur, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, line_thickness, blur_value)
 
-# Blurring image
+    return edges
 
-# Median Blurring (1)
+line_thickness, blur_value = 5, 5
+edges = edge_mask(img, line_thickness, blur_value)
 
-img_blur=cv2.medianBlur(img_grey,3)
-plt.imshow(img_blur)
-plt.axis("off")
-plt.title("AFTER MEDIAN BLURRING")
-plt.show()
+#plt.imshow(edges, cmap="binary")
+#plt.title("Edges in image")
+#plt.show()
 
-# Gaussian Blurring (2)
+def color_quant(img, k):
+    data = np.float32(img).reshape((-1,3))
+    criteria = (cv.TERM_CRITERIA_EPS+ cv.TERM_CRITERIA_MAX_ITER, 20, 0.001)
+    ret, label, center = cv.kmeans(data, k, None, criteria, 10, cv.KMEANS_RANDOM_CENTERS)
+    center = np.uint8(center)
 
-#####
+    result = center[label.flatten()]
+    result = result.reshape(img.shape)
 
-# Bilateral Blurring (3)
+    return result
 
-#####
+img_quant = color_quant(img, k = 5)
 
-# Creating edge mask
+#plt.imshow(img_quant)
+#plt.title("Major colors in image")
+#plt.show()
 
-edges=cv2.adaptiveThreshold(img_blur,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,3,3)
-plt.imshow(edges)
-plt.axis("off")
-plt.title("Edge Mask")
-plt.show()
+def cartoonify():
+    result = cv.bitwise_and(b_filter, img_quant, mask = edges)
+    
+    plt.imshow(original)
+    plt.title("Original image")
+    plt.show()
 
-# Erdoding & Dilating
+    plt.imshow(result)
+    plt.title("Cartoonified image")
+    plt.show()
 
-kernel=np.ones((1,1),np.uint8)
-img_erode=cv2.erode(img_bb,kernel,iterations=3)
-img_dilate=cv2.dilate(img_erode,kernel,iterations=3)
-plt.imshow(img_dilate)
-plt.axis("off")
-plt.title("AFTER ERODING AND DILATING")
-plt.show()
-
-# Stylization of image
-
-img_style=cv2.stylization(img,sigma_s=150,sigma_r=0.25)
-plt.imshow(img_style)
-plt.axis("off")
-plt.title("AFTER STYLIZATION")
-plt.show()
+cartoonify()
