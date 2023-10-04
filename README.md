@@ -11,8 +11,6 @@ Using the OpenCV libraries, this python program aims to cartoonify a given image
 
 Check img files - Screenshots will be added in the markdown later on.
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
 
 ## Installation
 
