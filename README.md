@@ -1,4 +1,4 @@
- Cartoonify
+# Cartoonify
 
 Using the OpenCV libraries, this python program aims to cartoonify a given image.
 
