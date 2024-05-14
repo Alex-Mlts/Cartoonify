@@ -7,6 +7,7 @@ Using the OpenCV libraries, this python program aims to cartoonify a given image
 ## Steps
 
 [To be added soon]
+
 ## Screenshots
 
 Check the "Images" folder files - Screenshots will be added in the markdown later on.
@@ -14,7 +15,7 @@ Check the "Images" folder files - Screenshots will be added in the markdown late
 
 ## Installation
 
-For the program to run OpenCV libraries must be installed
+For the program to run Python and <b>OpenCV</b> libraries must be installed.
     
 ### Optimizations
 
@@ -22,12 +23,6 @@ There are still a lot to be done in the code to make it better.
 
 Fixes, better user experience, etc might be added later on.
 
-
-### Acknowledgements
-
-- .
-- .
-- .
 
 ### Badges
 
