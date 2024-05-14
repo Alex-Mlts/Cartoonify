@@ -15,7 +15,7 @@ Check the "Images" folder files - Screenshots will be added in the markdown late
 
 ## Installation
 
-For the program to run Python and <b>OpenCV</b> libraries must be installed.
+For the program to run <b>Python</b> and <b>OpenCV</b> libraries must be installed.
     
 ### Optimizations
 
