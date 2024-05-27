@@ -1,6 +1,6 @@
 # Cartoonify
 
-Using the OpenCV libraries, this python program aims to cartoonify - in a way - a given image.
+Using the OpenCV libraries, this small python program aims to cartoonify - in a way - a given image.
 
 
 >**DISCLAIMER: The project might not be 100% correct! This is a first dive for me into the world of OpenCV and it's capabilities.**
